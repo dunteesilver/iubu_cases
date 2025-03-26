@@ -105,6 +105,29 @@ def process_all_months():
 # Example usage:
 final_data = process_all_months()
 
+final_data.rename(columns={
+    "Contact_Profile_NPI__c": "NPI",
+    "IUBU_Contact_Profile__r.Contact__r.FirstName": "HCPFirstName",
+    "IUBU_Contact_Profile__r.Contact__r.LastName": "HCPLastName",
+    "Date__c": "Month",
+    "Actuals": "CasesCompleted",
+    "Owner.Name": "HCP",
+    "Owner.Email": "UCEmail",
+    "Territory__c": "TerritoryCode",
+    "Territory_Name__c": "TerritoryName",
+    "Manager_First_Name__c": "RBMFirstName",
+    "Manager_Last_Name__c": "RBMLastName",
+    "Manager_Email__c": "RBMEmail"
+}, inplace=True)
+
+# Reorder the columns explicitly
+desired_order = [
+    "NPI", "HCPFirstName", "HCPLastName", "Month", "CasesCompleted",
+    "HCP", "UCEmail", "TerritoryCode", "TerritoryName",
+    "RBMFirstName", "RBMLastName", "RBMEmail"
+]
+
+final_data = final_data[desired_order] #Reorder the columns.
 output_filename = create_filename()
 final_data.to_csv(output_filename, index=False, na_rep='')
 print(f"Data for all months saved to {output_filename}")
